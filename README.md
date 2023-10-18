@@ -12,6 +12,10 @@ This page lists a variety of results in response to the search query and plays a
 
 ##
 
+Here are some key aspects of SERPs:
+
+###
+
 Organic Results: The primary content on a SERP is typically made up of organic search results. These are web pages that the search engine's algorithm deems most relevant to the user's query. Search engine optimization (SEO) is the practice of optimizing web content to improve its ranking in these organic search results.
 
 ##
