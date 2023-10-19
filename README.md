@@ -21,23 +21,18 @@ Key aspects of SERPs:
 
 - Related Searches: At the bottom of the SERP, search engines may suggest related queries to help users refine their search or explore related topics
 
-
 # Usage
+
 ## Install libraries
-**Request library**
+
 - https://pypi.org/project/requests/
-
-```
-pip install requests
-```
-
-**BeautifulSoup library**
 - https://pypi.org/project/beautifulsoup4/
 
 ```
+pip install requests
 pip install beautifulsoup4
 ```
 
-
 # Install dependencies (if applicable)
+
 npm install
