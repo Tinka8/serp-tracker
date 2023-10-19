@@ -33,6 +33,8 @@ pip install requests
 pip install beautifulsoup4
 ```
 
-# Install dependencies (if applicable)
+## Run
 
-npm install
+```
+python main.py
+```
