@@ -20,3 +20,24 @@ Key aspects of SERPs:
 - Local Results: For location-based queries, SERPs often include a map with local businesses, along with information like contact details, reviews, and hours of operation. These results are crucial for users seeking nearby products or services.
 
 - Related Searches: At the bottom of the SERP, search engines may suggest related queries to help users refine their search or explore related topics
+
+
+# Usage
+## Install libraries
+**Request library**
+- https://pypi.org/project/requests/
+
+```
+pip install requests
+```
+
+**BeautifulSoup library**
+- https://pypi.org/project/beautifulsoup4/
+
+```
+pip install beautifulsoup4
+```
+
+
+# Install dependencies (if applicable)
+npm install
