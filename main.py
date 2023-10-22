@@ -2,6 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
+import pymysql
 
 # ----------------------------------
 # Získáme odpověď z Google
@@ -76,4 +77,29 @@ if(found == True):
 # We did not find the domain we are looking for
 else:
     print(f"Vyhledávaná stránka nebyla nalezena v prvních { len(results) }")
+    
+# ----------------------------------
+# Zaznamenat výsledky do databáze
+# ----------------------------------
 
+# Připojení k databázi
+connection = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='',
+    database='serp_tracker'
+)
+
+# Otevření kurzoru
+cursor = connection.cursor()
+
+# Vložení dat do databáze
+sql = "INSERT INTO serp_results (search_for_domain, search_for_phrase, position) VALUES (%s, %s, %s)"
+cursor.execute(sql, (search_for_domain, search_for_phrase, position))
+
+# Commit změn
+connection.commit()
+
+# Uzavření spojení
+cursor.close()
+connection.close()
