@@ -1,5 +1,4 @@
 <?php
-// /index.php
 
 // Načteme data z interní API
 $results = json_decode(file_get_contents('http://serp-tracker.test/api/'), true);
@@ -7,9 +6,7 @@ $results = json_decode(file_get_contents('http://serp-tracker.test/api/'), true)
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-
-    </head>
+    <head></head>
     <body>
         <table border="1">
             <thead>
