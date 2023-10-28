@@ -1,20 +1,24 @@
-<?php
+<?php 
 
-// Načteme data z interní API
 $results = json_decode(file_get_contents('http://serp-tracker.test/api/'), true);
 
 ?>
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <title>SERP tracker</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
     <body>
-        <table border="1">
+        <table class="border border-gray-400 table-fixed w-full">
             <thead>
                 <tr>
-                    <th>Search for domain</th>
-                    <th>Search for phrase</th>
-                    <th>Position</th>
-                    <th>Current time</th>
+                    <th class="text-left w-80">Search for domain</th>
+                    <th class="text-left w-80">Search for phrase</th>
+                    <th class="text-left">Position</th>
+                    <th class="text-left">Current time</th>
                 </tr>
             </thead>
             <tbody>
