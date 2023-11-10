@@ -1,5 +1,4 @@
 <?php 
-// /index.php
 
 $results = json_decode(file_get_contents('http://serp-tracker.test/api/'), true);
 
@@ -13,6 +12,7 @@ $results = json_decode(file_get_contents('http://serp-tracker.test/api/'), true)
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
+    
     <body class="bg-zinc-200 py-12">
         <div class="max-w-6xl mx-auto pb-2 bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="mb-4 border-b border-zinc-200 bg-zinc-50 py-6 px-12">
@@ -85,6 +85,5 @@ $results = json_decode(file_get_contents('http://serp-tracker.test/api/'), true)
                 }
             });
         </script>
-
     </body>
 </html>
