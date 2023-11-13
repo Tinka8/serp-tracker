@@ -36,3 +36,9 @@ pip install beautifulsoup4
 ```
 python main.py
 ```
+
+## Run using arguments
+
+```
+python main.py -d "domain name" -s "search phrase" -n { number of results }
+```
