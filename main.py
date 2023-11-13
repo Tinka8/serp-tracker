@@ -24,6 +24,12 @@ search_for_phrase = args.search
 # Maximální počet výsledků, které chceme získat
 search_max_results = args.number
 
+# Maximální počet výsledků, které chceme získat
+search_max_results = 100
+
+# Výchozí hodnota je nenalezeno
+found = False
+
 # ----------------------------------
 # Získáme odpověď z Google
 # ----------------------------------
@@ -95,7 +101,7 @@ else:
 connection = pymysql.connect(
     host='localhost',
     user='root',
-    password='8180',
+    password='',
     database='serp_tracker'
 )
 
