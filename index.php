@@ -34,7 +34,7 @@ $phrases = json_decode(
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="bg-zinc-200 py-12">
-        <div class="max-w-6xl mx-auto mb-12 bg-white rounded-xl px-6 shadow-sm overflow-hidden">
+        <div class="max-w-6xl mx-auto mb-2 bg-white rounded-xl px-6 shadow-sm overflow-hidden">
             <form class="grid grid-cols-4 divide-x divide-zinc-200">
                 <div class="py-4 px-6">
                     <label for="domain" class="text-sm font-bold mb-1 block">
@@ -80,6 +80,48 @@ $phrases = json_decode(
                     </button>
                 </div>
             </form>
+        </div>
+
+        <div class="max-w-6xl mx-auto mb-12 bg-zinc-900 text-zinc-400 rounded-xl px-6 shadow-sm overflow-hidden">
+            <form class="grid grid-cols-4 divide-x divide-zinc-700" method="POST" action="/api/run">
+                <div class="py-4 px-6">
+                    <label for="search_domain" class="text-sm font-bold mb-1 block">
+                        Search for domain
+                    </label>
+                    <select name="domain" id="search_domain" class="py-1 px-2 text-sm border border-zinc-700 bg-zinc-950 rounded-sm" required>
+                        <option value="">Select domain</option>
+                        <?php foreach ($domains as $domain): ?>
+                            <option value="<?php echo $domain[
+                              "domain"
+                            ]; ?>" <?php echo $search_for_domain ===
+                                    $domain["domain"]
+                                    ? "selected"
+                                    : ""; ?>>
+                                <?php echo $domain["domain"]; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="py-4 px-6">
+                    <label for="search_phrase" class="text-sm font-bold mb-1 block">
+                        Search for phrase
+                    </label>
+                    <input type="text" name="phrase" id="search_phrase" class="py-1 px-2 text-sm border border-zinc-700 bg-zinc-950 rounded-sm"/>
+                </div>
+                <div class="py-4 px-6">
+                </div>
+                <div class="justify-end flex items-center">
+                    <button type="submit" class="rounded shadow border border-yellow-300 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 hover:text-yellow-950 px-3 py-1 hover:shadow-md">
+                        Get results
+                    </button>
+                </div>
+            </form>
+
+            <?php if (isset($_GET['message'])) : ?>
+                <div class="bg-zinc-950 border border-zinc-800 rounded-sm p-4 mb-4 text-xs text-white font-mono">
+                    <?php echo nl2br($_GET['message']); ?>
+                </div>
+            <?php endif; ?>
         </div>
 
         <div class="max-w-6xl mx-auto pb-2 bg-white rounded-xl shadow-lg overflow-hidden">
