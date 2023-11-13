@@ -1,51 +1,88 @@
-<?php 
+<?php
 
-$results = json_decode(file_get_contents('http://serp-tracker.test/api/'), true);
+$search_for_domain = $_GET["domain"] ?? null;
+$search_for_phrase = $_GET["phrase"] ?? null;
 
+$results = json_decode(
+  file_get_contents(
+    "http://serp-tracker.test/api/?" .
+      http_build_query([
+        "domain" => $search_for_domain,
+        "phrase" => $search_for_phrase,
+      ])
+  ),
+  true
+);
+
+$domains = json_decode(
+  file_get_contents("http://serp-tracker.test/api/domains/"),
+  true
+);
+
+$phrases = json_decode(
+  file_get_contents("http://serp-tracker.test/api/phrases/"),
+  true
+);
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Serp tracker</title>
+        <title>SERP tracker</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
-    
     <body class="bg-zinc-200 py-12">
-        <div class="max-w-6xl mx-auto pb-2 bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="mb-4 border-b border-zinc-200 bg-zinc-50 py-6 px-12">
-                <table class="table-fixed w-full text-sm">
-                    <thead>
-                        <tr>
-                            <th class="text-left w-80">Search for domain</th>
-                            <th class="text-left w-80">Search for phrase</th>
-                            <th class="text-left">Position</th>
-                            <th class="text-left">Current time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($results as $result) : ?>
-                            <tr>
-                                <td>
-                                    <?php echo $result['search_for_domain']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $result['search_for_phrase']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $result['position']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $result['current_time']; ?>
-                                </td>
-                            </tr>
+        <div class="max-w-6xl mx-auto mb-12 bg-white rounded-xl px-6 shadow-sm overflow-hidden">
+            <form class="grid grid-cols-4 divide-x divide-zinc-200">
+                <div class="py-4 px-6">
+                    <label for="domain" class="text-sm font-bold mb-1 block">
+                        Search for domain
+                    </label>
+                    <select name="domain" id="domain" class="py-1 px-2 text-sm border border-zinc-200 rounded-sm">
+                        <option value="">All domains</option>
+                        <?php foreach ($domains as $domain): ?>
+                            <option value="<?php echo $domain[
+                              "domain"
+                            ]; ?>" <?php echo $search_for_domain ===
+                                    $domain["domain"]
+                                    ? "selected"
+                                    : ""; ?>>
+                                <?php echo $domain["domain"]; ?>
+                            </option>
                         <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                    </select>
+                </div>
+                <div class="py-4 px-6">
+                    <label for="phrase" class="text-sm font-bold mb-1 block">
+                        Search for phrase
+                    </label>
+                    <select name="phrase" id="phrase" class="py-1 px-2 text-sm border border-zinc-200 rounded-sm">
+                        <option value="">All phrases</option>
+                        <?php foreach ($phrases as $phrase): ?>
+                            <option value="<?php echo $phrase[
+                              "phrase"
+                            ]; ?>" <?php echo $search_for_phrase ===
+                                    $phrase["phrase"]
+                                    ? "selected"
+                                    : ""; ?>>
+                                <?php echo $phrase["phrase"]; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="py-4">
+                </div>
+                <div class="justify-end flex items-center">
+                    <button type="submit" class="rounded shadow border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 text-zinc-700 hover:text-zinc-800 px-3 py-1 hover:shadow-md">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
 
+        <div class="max-w-6xl mx-auto pb-2 bg-white rounded-xl shadow-lg overflow-hidden">
             <div>
                 <canvas id="serpChart"></canvas>
             </div>
@@ -58,27 +95,31 @@ $results = json_decode(file_get_contents('http://serp-tracker.test/api/'), true)
                 type: 'line',
                 data: {
                     labels: [
-                        <?php foreach($results as $result): ?>
-                            '<?php echo $result['current_time']; ?>',
+                        <?php foreach ($results['labels'] as $label): ?>
+                            '<?php echo $label; ?>',
                         <?php endforeach; ?>
                     ],
                     datasets: [
-                        {
-                            label: 'Position',
-                            data: [
-                                <?php foreach($results as $result): ?>
-                                    <?php echo $result['position']; ?>,
-                                <?php endforeach; ?>
-                            ]
-                        }
+                        <?php foreach($results['datasets'] as $domain => $keywords): ?>
+                            <?php foreach($keywords as $keyword => $positions): ?>
+                                {
+                                    label: '<?php echo $domain; ?> - <?php echo $keyword; ?>',
+                                    data: [
+                                        <?php foreach($results['labels'] as $label): ?>
+                                            <?php echo isset($positions[$label]) ? $positions[$label]['position'] : $results['max']; ?>,
+                                        <?php endforeach; ?>
+                                    ]
+                                },
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                     ]
                 },
                 options: {
-                    // Nastavíme osu tak, aby nejvyšší hodnota byla 1 a nejnižší 10 - poziční sledování
+                    // Nastavíme osu tak, aby nejvyšší hodnota byla 1 a nejnižší maximální nalezená - poziční sledování
                     scales: {
                         y: {
                             reverse: true,
-                            min: 10,
+                            min: <?php echo $results['max']; ?>,
                             max: 1,
                         }
                     }
