@@ -1,18 +1,38 @@
 # Importovat potřebné knihovny
+from argparse import ArgumentParser
+from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urlparse
 import pymysql
+
+# ----------------------------------
+# Konfigurace
+# ----------------------------------
+
+parser = ArgumentParser()
+parser.add_argument("-d", "--domain", dest="domain", help="Domain we are looking for", default="www.zastavarna-bilina.cz")
+parser.add_argument("-s", "--search", dest="search", help="Search phrase", default="zastavárna Bílina")
+parser.add_argument("-n", "--number", dest="number", help="Number of results", default=100)
+args = parser.parse_args()
+
+# Doména, kterou chceme ve výsledcích vyhledat
+search_for_domain = args.domain
+
+# Vyhledávací výraz, který jsme zadali
+search_for_phrase = args.search
+
+# Maximální počet výsledků, které chceme získat
+search_max_results = args.number
 
 # ----------------------------------
 # Získáme odpověď z Google
 # ----------------------------------
 
 # Deklarujeme hlavičky prohlížeče, které by měl normální uživatel používat
-headers = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36','referer':'https://www.google.com'}
+headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36','referer':'https://www.google.com'}
 
 # Definujeme URL adresu, na které chceme výsledky hledat (Google)
-target_url = 'https://www.google.com/search?q=zastav%C3%A1rna+B%C3%ADlina'
+target_url='https://www.google.com/search?q=' + search_for_phrase + '&num=' + str(search_max_results)
 
 # Získáme odpověď z Google
 response = requests.get(target_url, headers=headers)
@@ -20,18 +40,9 @@ response = requests.get(target_url, headers=headers)
 # Vypíšeme status code odpovědi
 print(response.status_code)
 
-# Vyhodnotíme jestli požadavek skončil úspěchem
-if (response.status_code == 200):
-    print("Vše v pořádku")
-else:
-    print("Něco se pokazilo")
-
 # ----------------------------------
 # Analyzujeme odpověď
 # ----------------------------------
-
-# Doména, kterou chceme ve výsledcích vyhledat
-search_for_domain = "www.zastavarna-bilina.cz"
 
 # Parsování odpovědi pomocí knihovny BeautifulSoup
 soup = BeautifulSoup(response.text,'html.parser')
@@ -62,22 +73,20 @@ for result in range(0, len(results)):
         break
     else:
         found = False
-        
+
 # ----------------------------------
 # Výsledky analýzy
 # ----------------------------------
 
-# Vyhledávací výraz, který jsme zadali
-search_for_phrase = "zastavárna Bílina"
-
-# We found the domain we are looking for
+# Našli jsme doménu, kterou hledáme
 if(found == True):
-    print(f"Vyhledávaná stránka { search_for_domain } byla pro vyhledávací výraz { search_for_phrase } nalezena na pozici { position }")
+    print("Vyhledávaná stránka", search_for_domain, "byla pro vyhledávací výraz", search_for_phrase, "nalezena na pozici", position)
 
-# We did not find the domain we are looking for
+# Nenašli jsme doménu, kterou hledáme
 else:
-    print(f"Vyhledávaná stránka nebyla nalezena v prvních { len(results) }")
-    
+    print("Vyhledávaná stránka nebyla nalezena v prvních", len(results))
+    exit(1)
+
 # ----------------------------------
 # Zaznamenat výsledky do databáze
 # ----------------------------------
