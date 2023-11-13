@@ -1,5 +1,4 @@
 <?php
-// /db.php
 
 // Údaje pro připojení k databázi
 $servername = 'localhost';
