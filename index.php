@@ -42,7 +42,7 @@ $phrases = json_decode(
             }
         </style>
     </head>
-    <body class="bg-zinc-200 py-12">
+    <body class="bg-zinc-100 py-12">
         <div class="max-w-6xl mx-auto">
             <h1 class="uppercase font-extrabold text-2xl pb-6">
                 <a href="/" class="text-black hover:text-zinc-800 tracking-tighter">
@@ -56,7 +56,7 @@ $phrases = json_decode(
                     <label for="domain" class="text-sm font-bold mb-1 block">
                         Search for domain
                     </label>
-                    <select name="domain" id="domain" class="py-1 px-2 text-sm border border-t-zinc-300 bg-zinc-200 rounded-sm">
+                    <select name="domain" id="domain" class="py-1 px-2 text-sm border border-t-zinc-300 bg-zinc-100 rounded-sm shadow-lg">
                         <option value="">All domains</option>
                         <?php foreach ($domains as $domain): ?>
                             <option value="<?php echo $domain[
@@ -74,7 +74,7 @@ $phrases = json_decode(
                     <label for="phrase" class="text-sm font-bold mb-1 block">
                         Search for phrase
                     </label>
-                    <select name="phrase" id="phrase" class="py-1 px-2 text-sm border border-t-zinc-300 bg-zinc-200 rounded-sm">
+                    <select name="phrase" id="phrase" class="py-1 px-2 text-sm border border-t-zinc-300 bg-zinc-100 rounded-sm shadow-lg">
                         <option value="">All phrases</option>
                         <?php foreach ($phrases as $phrase): ?>
                             <option value="<?php echo $phrase[
@@ -98,7 +98,7 @@ $phrases = json_decode(
             </form>
         </div>
 
-        <div class="max-w-6xl mx-auto mb-12 bg-zinc-800 text-zinc-400 rounded-b-xl px-6 shadow-sm overflow-hidden">
+        <div class="max-w-6xl mx-auto mb-12 bg-zinc-800 text-zinc-400 rounded-b-xl px-6 shadow-md overflow-hidden">
             <form class="grid grid-cols-4 divide-x divide-transparent" method="POST" action="/api/run">
                 <div class="py-4 px-6">
                     <label for="search_domain" class="text-sm font-bold mb-1 block">
