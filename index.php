@@ -1,5 +1,4 @@
 <?php
-// /index.php
 
 $search_for_domain = $_GET["domain"] ?? null;
 $search_for_phrase = $_GET["phrase"] ?? null;

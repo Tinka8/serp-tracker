@@ -3,7 +3,7 @@
 // Údaje pro připojení k databázi
 $servername = 'localhost';
 $username = 'root';
-$password = '';
+$password = 'matejvolesini';
 $dbname = 'serp_tracker';
 
 // Vytvoření spojení

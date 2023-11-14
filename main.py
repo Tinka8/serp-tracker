@@ -101,7 +101,7 @@ else:
 connection = pymysql.connect(
     host='localhost',
     user='root',
-    password='',
+    password='matejvolesini',
     database='serp_tracker'
 )
 
