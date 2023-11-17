@@ -1,9 +1,27 @@
+# cSpell:disable
+# ----------------------------------------------------------------------
+#
+# file name: main.py
+# project: SERP Tracker
+#
+# usage:
+#
+#   python main.py -d www.zastavarna-bilina.cz -s "zastavárna Bílina" -n 100
+#   python main.py -a
+#
+# help:
+#
+#   python main.py -h
+# ----------------------------------------------------------------------
 # Importovat potřebné knihovny
 from argparse import ArgumentParser
 from urllib.parse import urlparse
+import time
 import requests
 from bs4 import BeautifulSoup
 import pymysql
+
+start_time = time.time()
 
 # ----------------------------------
 # Připojení k databázi
@@ -212,3 +230,8 @@ else:
 # ----------------------------------
 
 connection.close()
+
+end_time = time.time()
+
+elapsed_time = end_time - start_time
+print("Skript běžel", elapsed_time, "sekund.")
