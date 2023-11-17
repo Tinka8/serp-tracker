@@ -37,6 +37,12 @@ pip install beautifulsoup4
 python main.py
 ```
 
+## Run all presets
+
+```
+python main.py -a
+```
+
 ## Run using arguments
 
 ```
