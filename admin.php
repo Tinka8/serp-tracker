@@ -52,6 +52,12 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 <div class="max-w-6xl mx-auto bg-white rounded-xl mt-6 p-6">
+    <div class="text-right pb-6">
+        <form method="POST" action="/api/run" class="inline-block">
+            <input type="hidden" name="all" value="1">
+            <button type="submit" class="text-sm border border-zinc-600 bg-zinc-100 hover:bg-zinc-200 px-1 py-0.5 inline-block">Run all</button>
+        </form>
+    </div>
     <table class="w-full border text-sm">
         <thead class="bg-zinc-50">
             <tr>
