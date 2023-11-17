@@ -19,36 +19,67 @@ This page lists a variety of results in response to the search query and plays a
 
 - Related Searches: At the bottom of the SERP, search engines may suggest related queries to help users refine their search or explore related topics
 
-# Usage
+## Installation
 
-## Install libraries
-
-- https://pypi.org/project/requests/
-- https://pypi.org/project/beautifulsoup4/
-
-```
+```sh
 pip install requests
 pip install beautifulsoup4
+pip install PyMySQL
 ```
 
-## Run
+## Installation DB
 
-```
-python main.py
-```
+### Create database
 
-## Run all presets
-
-```
-python main.py -a
+```sql
+CREATE DATABASE serp_tracker;
+USE `serp_tracker`;
 ```
 
-```
-python main.py -v
+### Migrate tables
+
+```sql
+# serp_results
+CREATE TABLE `serp_results` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `search_for_domain` varchar(255) DEFAULT NULL,
+  `search_for_phrase` varchar(255) DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `current_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# serp_presets
+CREATE TABLE `serp_presets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `search_for_domain` varchar(255) DEFAULT NULL,
+  `search_for_phrase` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
-## Run using arguments
+## Usage
 
+### Run script for specific domain and phrase
+
+```sh
+python main.py -d www.zastavarna-bilina.cz -s "zastavárna Bílina" -n 100
 ```
-python main.py -d "domain name" -s "search phrase" -n { number of results }
+
+### Run all preset domains and phrases
+
+```sh
+python -a
 ```
+
+### Arguments and options
+
+| Argument | Name      | Default                    | Description                                       |
+| -------- | --------- | -------------------------- | ------------------------------------------------- |
+| -d       | --domain  | `www.zastavarna-bilina.cz` | Domain we are looking for                         |
+| -s       | --search  | `zastavárna Bílina`        | Search phrase                                     |
+| -n       | --number  | 100                        | Maximum number of results to check                |
+| -a       | --all     | `false`                    | Scrape all from serp_presets, overrides -d and -s |
+| -v       | --verbose | `false`                    | Verbose mode                                      |
+
+---
