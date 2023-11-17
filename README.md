@@ -43,6 +43,10 @@ python main.py
 python main.py -a
 ```
 
+```
+python main.py -v
+```
+
 ## Run using arguments
 
 ```
