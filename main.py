@@ -61,6 +61,14 @@ parser.add_argument(
     help="Scrape all from serp_presets",
     default=False,
 )
+parser.add_argument(
+    "-v",
+    "--verbose",
+    dest="verbose",
+    action="store_true",
+    help="Verbose mode",
+    default=False,
+)
 args = parser.parse_args()
 
 # ----------------------------------
@@ -177,16 +185,25 @@ def write_position_results(used_domain, used_phrase, found_position):
 # ----------------------------------
 
 
-def load_position(local_domain, local_phrase, local_max_results):
+def load_position(local_domain, local_phrase, local_max_results, debug=False):
+    if debug:
+        print("Hledáme doménu", local_domain, "pro výraz", local_phrase)
+
     position = get_position(local_domain, local_phrase, local_max_results)
+
+    if debug:
+        print("Pozice je", position)
 
     print_position_results(local_domain, local_phrase, position, local_max_results)
 
     if position > 0:
         write_position_results(local_domain, local_phrase, position)
 
+        if debug:
+            print("Výsledky byly zapsány do databáze")
 
-def load_all_positions(local_max_results):
+
+def load_all_positions(local_max_results, debug=False):
     # Get all presets from table serp_presets
     cursor = connection.cursor()
 
@@ -200,7 +217,7 @@ def load_all_positions(local_max_results):
 
     # Iterate over presets
     for preset in presets:
-        load_position(preset[0], preset[1], local_max_results)
+        load_position(preset[0], preset[1], local_max_results, debug)
 
 
 # ----------------------------------
@@ -219,10 +236,14 @@ search_max_results = args.number
 # Chceme provést vyhledání všech uložených pozic
 search_all = args.all
 
+# Chceme použít verbose mód
+verbose = args.verbose
+
+# Spustíme analýzu
 if search_all:
-    load_all_positions(search_max_results)
+    load_all_positions(search_max_results, verbose)
 else:
-    load_position(search_for_domain, search_for_phrase, search_max_results)
+    load_position(search_for_domain, search_for_phrase, search_max_results, verbose)
 
 
 # ----------------------------------
